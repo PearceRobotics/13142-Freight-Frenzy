@@ -46,7 +46,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor backRightDrive = null;
     private DcMotor rightDrive = null;
     private DcMotor carouselDrive = null;
-    private DcMotor armDrive = null;
+    private DcMotor leftArmDrive = null;
+    private DcMotor rightArmDrive = null;
     private DcMotor intakeDrive = null;
 
     @Override
@@ -62,7 +63,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
         carouselDrive = hardwareMap.get(DcMotor.class, "carousel_drive");
-        armDrive = hardwareMap.get(DcMotor.class, "arm_drive");
+        leftArmDrive = hardwareMap.get(DcMotor.class, "left_arm_drive");
+        rightArmDrive = hardwareMap.get(DcMotor.class, "right_arm_drive");
         intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -72,7 +74,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         carouselDrive.setDirection(DcMotor.Direction.REVERSE);
-        armDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftArmDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightArmDrive.setDirection(DcMotor.Direction.FORWARD);
         intakeDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
@@ -87,7 +90,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double BackLeftPower;
             double rightPower;
             double BackRightPower;
-            double armPower;
+            double leftArmPower;
+            double rightArmPower;
 
             //Driving and turning(direct drive)
             double drive = -gamepad1.left_stick_y;
@@ -107,7 +111,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
             //arm
             double arm = gamepad1.right_stick_y;
-            armPower = Range.clip(arm, -1.0, 1.0);
+            //minimum is arm moving down and max is arm moving up?
+            leftArmPower = Range.clip(arm, -0.4, 0.8);
+            rightArmPower = Range.clip(arm, -0.4, 0.8);
 
             // intake
             if (gamepad1.right_bumper)
@@ -122,12 +128,13 @@ public class BasicOpMode_Linear extends LinearOpMode {
             backLeftDrive.setPower(BackLeftPower);
             rightDrive.setPower(rightPower);
             backRightDrive.setPower(BackRightPower);
-            armDrive.setPower(armPower);
+            leftArmDrive.setPower(leftArmPower);
+            rightArmDrive.setPower(rightArmPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f), backleft (%.2f), backright (%.2f), arm (%.2f))",
-                    leftPower, rightPower, BackLeftPower, BackRightPower, armPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f), backleft (%.2f), backright (%.2f), leftarm (%.2f), rightarm (%.2f))",
+                    leftPower, rightPower, BackLeftPower, BackRightPower, leftArmPower, rightArmPower);
             telemetry.update();
         }
     }
