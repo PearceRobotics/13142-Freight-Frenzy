@@ -60,6 +60,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
     private DcMotor rightDrive = null;
+    private DcMotor carouselDrive = null;
+    private DcMotor armDrive = null;
+    private DcMotor intakeDrive = null;
 
     @Override
     public void runOpMode() {
@@ -73,13 +76,19 @@ public class BasicOpMode_Linear extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        carouselDrive = hardwareMap.get(DcMotor.class, "carousel_drive");
+        armDrive = hardwareMap.get(DcMotor.class, "arm_drive");
+        intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        carouselDrive.setDirection(DcMotor.Direction.REVERSE);
+        armDrive.setDirection(DcMotor.Direction.REVERSE);
+        intakeDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -93,6 +102,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double BackLeftPower;
             double rightPower;
             double BackRightPower;
+            double carouselFPower;
+            double armPower;
+            double intakePower;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -101,10 +113,20 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
+            //two carousels-one forward(left button) and one backward(left trigger)
+            boolean carouselForward = gamepad1.left_stick_button;
+            double carouselBackward = gamepad1.left_trigger;
+            double arm = gamepad1.left_stick_x;
+            //change intake control to right button(forward) and right trigger(backward)
+            boolean intakeForward = gamepad1.right_stick_button;
+            double intakeBackward = gamepad1.right_trigger;
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             BackLeftPower = Range.clip(drive + turn, -1.0,1.0);
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
             BackRightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            carouselFPower = Range.clip(carousel, -1.0, 1.0);
+            armPower = Range.clip(arm, -1.0, 1.0);
+            intakePower = Range.clip(intake, -1.0, 1.0);
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -116,10 +138,14 @@ public class BasicOpMode_Linear extends LinearOpMode {
             backLeftDrive.setPower(BackLeftPower);
             rightDrive.setPower(rightPower);
             backRightDrive.setPower(BackRightPower);
+            carouselDrive.setPower(carouselPower);
+            armDrive.setPower(armPower);
+            intakeDrive.setPower(intakePower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f),backleft(%.2f), backright (%.2f)", leftPower, rightPower, BackLeftPower, BackRightPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f), backleft (%.2f), backright (%.2f), carousel (%.2f), arm (%.2f), intake (%.2f)",
+                    leftPower, rightPower, BackLeftPower, BackRightPower, carouselPower, armPower, intakePower);
             telemetry.update();
         }
     }
