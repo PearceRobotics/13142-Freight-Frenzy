@@ -36,22 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-
-/**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
 @TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
-//@Disabled
 public class BasicOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
@@ -102,50 +87,47 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double BackLeftPower;
             double rightPower;
             double BackRightPower;
-            double carouselFPower;
             double armPower;
-            double intakePower;
 
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
+            //Driving and turning(direct drive)
             double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
-            //two carousels-one forward(left button) and one backward(left trigger)
-            boolean carouselForward = gamepad1.left_stick_button;
-            double carouselBackward = gamepad1.left_trigger;
-            double arm = gamepad1.left_stick_x;
-            //change intake control to right button(forward) and right trigger(backward)
-            boolean intakeForward = gamepad1.right_stick_button;
-            double intakeBackward = gamepad1.right_trigger;
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             BackLeftPower = Range.clip(drive + turn, -1.0,1.0);
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
             BackRightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-            carouselFPower = Range.clip(carousel, -1.0, 1.0);
-            armPower = Range.clip(arm, -1.0, 1.0);
-            intakePower = Range.clip(intake, -1.0, 1.0);
 
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
+            //two carousels-one forward(left button) and one backward(left trigger)
+            if (gamepad1.left_bumper)
+                carouselDrive.setPower(1);
+            else if (gamepad1.left_trigger > 0)
+                carouselDrive.setPower(-1);
+            else
+                carouselDrive.setPower(0);
+
+            //arm
+            double arm = gamepad1.right_stick_y;
+            armPower = Range.clip(arm, -1.0, 1.0);
+
+            // intake
+            if (gamepad1.right_bumper)
+                intakeDrive.setPower(1);
+            else if (gamepad1.right_trigger > 0)
+                intakeDrive.setPower(-1);
+            else
+                intakeDrive.setPower(0);
 
             // Send calculated power to wheels
             leftDrive.setPower(leftPower);
             backLeftDrive.setPower(BackLeftPower);
             rightDrive.setPower(rightPower);
             backRightDrive.setPower(BackRightPower);
-            carouselDrive.setPower(carouselPower);
             armDrive.setPower(armPower);
-            intakeDrive.setPower(intakePower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f), backleft (%.2f), backright (%.2f), carousel (%.2f), arm (%.2f), intake (%.2f)",
-                    leftPower, rightPower, BackLeftPower, BackRightPower, carouselPower, armPower, intakePower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f), backleft (%.2f), backright (%.2f), arm (%.2f))",
+                    leftPower, rightPower, BackLeftPower, BackRightPower, armPower);
             telemetry.update();
         }
     }
