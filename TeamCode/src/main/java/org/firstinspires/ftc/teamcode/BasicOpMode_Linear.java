@@ -132,9 +132,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
                 armPosition = leftArmDrive.getCurrentPosition();
 
             if (gamepad1.x)
-                armPosition = 400;
+                armPosition = -600; // pickup from the ground
             if (gamepad1.y)
-                armPosition = 500;
+                armPosition = 0; // lift to safety position
 
             leftArmDrive.setTargetPosition(armPosition);
             rightArmDrive.setTargetPosition(armPosition);
