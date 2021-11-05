@@ -124,9 +124,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
             //arm
             double arm = gamepad1.right_stick_y;
             //minimum is arm moving down and max is arm moving up?
-            if (gamepad1.dpad_up)
+            if (gamepad1.dpad_down)
                 armPosition += 15;
-            else if (gamepad1.dpad_down)
+            else if (gamepad1.dpad_up)
                 armPosition -= 15;
             else
                 armPosition = leftArmDrive.getCurrentPosition();
