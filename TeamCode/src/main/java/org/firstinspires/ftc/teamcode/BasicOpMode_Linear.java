@@ -36,7 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
+@TeleOp(name="Teleop", group="Drive code")
 public class BasicOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
@@ -66,6 +66,17 @@ public class BasicOpMode_Linear extends LinearOpMode {
         leftArmDrive = hardwareMap.get(DcMotor.class, "left_arm_drive");
         rightArmDrive = hardwareMap.get(DcMotor.class, "right_arm_drive");
         intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
+        
+        leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        int armPosition = 0;
+        leftArmDrive.setTargetPosition(0);
+        rightArmDrive.setTargetPosition(0);
+        leftArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -77,6 +88,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
         leftArmDrive.setDirection(DcMotor.Direction.REVERSE);
         rightArmDrive.setDirection(DcMotor.Direction.FORWARD);
         intakeDrive.setDirection(DcMotor.Direction.FORWARD);
+
+        leftArmDrive.setPower(1);
+        rightArmDrive.setPower(1);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -90,8 +104,6 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double BackLeftPower;
             double rightPower;
             double BackRightPower;
-            double leftArmPower;
-            double rightArmPower;
 
             //Driving and turning(direct drive)
             double drive = -gamepad1.left_stick_y;
@@ -112,8 +124,20 @@ public class BasicOpMode_Linear extends LinearOpMode {
             //arm
             double arm = gamepad1.right_stick_y;
             //minimum is arm moving down and max is arm moving up?
-            leftArmPower = Range.clip(arm, -0.4, 0.8);
-            rightArmPower = Range.clip(arm, -0.4, 0.8);
+            if (gamepad1.right_stick_y > 0.3)
+                armPosition += 15;
+            else if (gamepad1.right_stick_y < -0.3)
+                armPosition -= 15;
+            else
+                armPosition = leftArmDrive.getCurrentPosition();
+
+            if (gamepad1.x)
+                armPosition = 400;
+            if (gamepad1.y)
+                armPosition = 500;
+
+            leftArmDrive.setTargetPosition(armPosition);
+            rightArmDrive.setTargetPosition(armPosition);
 
             // intake
             if (gamepad1.right_bumper)
@@ -128,13 +152,11 @@ public class BasicOpMode_Linear extends LinearOpMode {
             backLeftDrive.setPower(BackLeftPower);
             rightDrive.setPower(rightPower);
             backRightDrive.setPower(BackRightPower);
-            leftArmDrive.setPower(leftArmPower);
-            rightArmDrive.setPower(rightArmPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f), backleft (%.2f), backright (%.2f), leftarm (%.2f), rightarm (%.2f))",
-                    leftPower, rightPower, BackLeftPower, BackRightPower, leftArmPower, rightArmPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f), backleft (%.2f), backright (%.2f), armposition (%d), rightjoystick_y (%.3f))",
+                    leftPower, rightPower, BackLeftPower, BackRightPower, armPosition, gamepad1.right_stick_y);
             telemetry.update();
         }
     }
