@@ -125,16 +125,18 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double arm = gamepad1.right_stick_y;
             //minimum is arm moving down and max is arm moving up?
             if (gamepad1.dpad_down)
-                armPosition += 15;
+                armPosition = leftArmDrive.getCurrentPosition()+ 15;
             else if (gamepad1.dpad_up)
-                armPosition -= 15;
-            else
-                armPosition = leftArmDrive.getCurrentPosition();
+                armPosition = leftArmDrive.getCurrentPosition()- 15;
+            /*else
+                armPosition = leftArmDrive.getCurrentPosition();*/
 
             if (gamepad1.x)
                 armPosition = -600; // pickup from the ground
             if (gamepad1.y)
-                armPosition = 0; // lift to safety position
+                armPosition = -50; // lift to safety position
+            if (gamepad1.a)
+                armPosition = -310;
 
             leftArmDrive.setTargetPosition(armPosition);
             rightArmDrive.setTargetPosition(armPosition);
