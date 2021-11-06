@@ -114,20 +114,18 @@ public class BasicOpMode_Linear extends LinearOpMode {
             BackRightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
             //two carousels-one forward(left button) and one backward(left trigger)
-            if (gamepad1.left_bumper)
+            if (gamepad1.dpad_up)
                 carouselDrive.setPower(1);
-            else if (gamepad1.left_trigger > 0)
+            else if (gamepad1.dpad_down)
                 carouselDrive.setPower(-1);
             else
                 carouselDrive.setPower(0);
 
             //arm
-            double arm = gamepad1.right_stick_y;
-            //minimum is arm moving down and max is arm moving up?
-            if (gamepad1.dpad_down)
-                armPosition = leftArmDrive.getCurrentPosition()+ 15;
-            else if (gamepad1.dpad_up)
-                armPosition = leftArmDrive.getCurrentPosition()- 15;
+            if (gamepad1.left_trigger > 0.25)
+                armPosition = leftArmDrive.getCurrentPosition() - 45;
+            else if (gamepad1.left_bumper)
+                armPosition = leftArmDrive.getCurrentPosition() + 45;
             /*else
                 armPosition = leftArmDrive.getCurrentPosition();*/
 
@@ -136,7 +134,16 @@ public class BasicOpMode_Linear extends LinearOpMode {
             if (gamepad1.y)
                 armPosition = -50; // lift to safety position
             if (gamepad1.a)
-                armPosition = -310;
+                armPosition = -310; // score on level 2
+            if (gamepad1.b)
+                armPosition = -550; //pickup slightly higher
+
+            if (armPosition > 0)
+                leftArmDrive.setPower(0);
+                rightArmDrive.setPower(0);
+            if (armPosition > -600)
+                leftArmDrive.setPower(0);
+                rightArmDrive.setPower(0);
 
             leftArmDrive.setTargetPosition(armPosition);
             rightArmDrive.setTargetPosition(armPosition);
