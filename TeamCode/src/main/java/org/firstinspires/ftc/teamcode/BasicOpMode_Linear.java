@@ -138,12 +138,18 @@ public class BasicOpMode_Linear extends LinearOpMode {
             if (gamepad1.b)
                 armPosition = -550; //pickup slightly higher
 
-            if (armPosition > 0)
+            if (armPosition > 1) {
                 leftArmDrive.setPower(0);
                 rightArmDrive.setPower(0);
-            if (armPosition > -600)
+            }
+            else if (armPosition > -600) {
                 leftArmDrive.setPower(0);
                 rightArmDrive.setPower(0);
+            }
+            else {
+                leftArmDrive.setPower(1);
+                rightArmDrive.setPower(1);
+            }
 
             leftArmDrive.setTargetPosition(armPosition);
             rightArmDrive.setTargetPosition(armPosition);

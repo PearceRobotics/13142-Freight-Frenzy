@@ -27,8 +27,8 @@ public class AutonRed extends LinearOpMode {
     private double fast = 1;
     private double slow = 0.5;
     private int angle;
-    private double clicksPerInch = 75.53 * 4 / 9;
-    private double clicksPerDeg = 9.64 * 4 / 9;
+    private double clicksPerInch = 75.53 * (4 / 9); // 4x encoding ppr to cpr
+    private double clicksPerDeg = 9.64 * (4 / 9);
 
     @Override
     public void runOpMode() {
@@ -74,7 +74,10 @@ public class AutonRed extends LinearOpMode {
 
     private void moveForward(double howFar, double speed) {
         // howFar is in inches
-
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // fetch motor positions
         lFPos = leftDrive.getCurrentPosition();
         rFPos = rightDrive.getCurrentPosition();
@@ -88,21 +91,22 @@ public class AutonRed extends LinearOpMode {
         rBPos += howFar * clicksPerInch;
 
         // move robot to new position
-        leftDrive.setTargetPosition(lFPos);
-        rightDrive.setTargetPosition(rFPos);
-        backLeftDrive.setTargetPosition(lBPos);
-        backRightDrive.setTargetPosition(rBPos);
         leftDrive.setPower(speed);
         rightDrive.setPower(speed);
         backLeftDrive.setPower(speed);
         backRightDrive.setPower(speed);
+        leftDrive.setTargetPosition(lFPos);
+        rightDrive.setTargetPosition(rFPos);
+        backLeftDrive.setTargetPosition(lBPos);
+        backRightDrive.setTargetPosition(rBPos);
+
 
         // wait for move to complete
         while (leftDrive.isBusy() || rightDrive.isBusy() ||
                 backLeftDrive.isBusy() || backRightDrive.isBusy()) {
 
             // Display it for the driver.
-            telemetry.addLine("Move Foward");
+            telemetry.addLine("Move Forward");
             telemetry.addData("Target", "%7d :%7d", lFPos, rFPos, lBPos, rBPos);
             telemetry.addData("Actual", "%7d :%7d", leftDrive.getCurrentPosition(),
                     rightDrive.getCurrentPosition(), backLeftDrive.getCurrentPosition(),
