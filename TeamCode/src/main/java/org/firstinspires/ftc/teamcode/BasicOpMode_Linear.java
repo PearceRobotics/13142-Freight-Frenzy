@@ -132,13 +132,13 @@ public class BasicOpMode_Linear extends LinearOpMode {
             if (gamepad1.x)
                 armPosition = -600; // pickup from the ground
             if (gamepad1.y)
-                armPosition = -50; // lift to safety position
+                armPosition = -25; // lift to safety position
             if (gamepad1.a)
-                armPosition = -310; // score on level 2
+                armPosition = -320; // score on level 2
             if (gamepad1.b)
                 armPosition = -550; //pickup slightly higher
 
-            if (armPosition > 1) {
+            /*if (armPosition > 1) {
                 leftArmDrive.setPower(0);
                 rightArmDrive.setPower(0);
             }
@@ -149,7 +149,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             else {
                 leftArmDrive.setPower(1);
                 rightArmDrive.setPower(1);
-            }
+            }*/
 
             leftArmDrive.setTargetPosition(armPosition);
             rightArmDrive.setTargetPosition(armPosition);

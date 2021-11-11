@@ -24,11 +24,13 @@ public class AutonRed extends LinearOpMode {
     private int carPos;
 
     // operational constants
-    private double fast = 1;
-    private double slow = 0.5;
+    private final double fast = 1;
+    private final double slow = 0.5;
     private int angle;
-    private double clicksPerInch = 75.53 * (4 / 9); // 4x encoding ppr to cpr
-    private double clicksPerDeg = 9.64 * (4 / 9);
+    //75.53 * (4 / 9
+    private final double clicksPerInch = 89.12;  // 4x encoding ppr to cpr
+    //9.64 * (4 / 9)
+    private final double clicksPerDeg = 12.88;
 
     @Override
     public void runOpMode() {
@@ -66,14 +68,22 @@ public class AutonRed extends LinearOpMode {
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg
         moveForward(12, fast);
-        turnClockwise(45, fast);
-        moveForward(-20, slow);
-        carouselClockWise(1, fast);
+        turnClockwise(90, fast);
+        moveForward(-18.75, slow);
+        turnClockwise(-95, fast);
+        moveForward(-10, fast);
+        carouselClockWise(-15, fast);
+        moveForward(11.2, fast);
+
 
     }
 
     private void moveForward(double howFar, double speed) {
         // howFar is in inches
+        leftDrive.setTargetPosition(0);
+        rightDrive.setTargetPosition(0);
+        backLeftDrive.setTargetPosition(0);
+        backRightDrive.setTargetPosition(0);
         leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -85,10 +95,10 @@ public class AutonRed extends LinearOpMode {
         rBPos = backRightDrive.getCurrentPosition();
 
         // calculate new targets
-        lFPos += howFar * clicksPerInch;
-        rFPos += howFar * clicksPerInch;
-        lBPos += howFar * clicksPerInch;
-        rBPos += howFar * clicksPerInch;
+        lFPos += (howFar * clicksPerInch);
+        rFPos += (howFar * clicksPerInch);
+        lBPos += (howFar * clicksPerInch);
+        rBPos += (howFar * clicksPerInch);
 
         // move robot to new position
         leftDrive.setPower(speed);
@@ -168,18 +178,21 @@ public class AutonRed extends LinearOpMode {
     }
 
     private void carouselClockWise(double howFar, double speed) {
+        carouselDrive.setTargetPosition(0);
+        carouselDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         carPos = carouselDrive.getCurrentPosition();
         carPos += howFar * clicksPerInch;
         carouselDrive.setTargetPosition(carPos);
         carouselDrive.setPower(speed);
-        while (Math.abs(carPos - carouselDrive.getCurrentPosition()) > 0.01) {
+
+        //while (Math.abs(carPos - carouselDrive.getCurrentPosition()) > 0.1) {
 
             try {
-                Thread.sleep(5);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        //}
 
     }
 }
