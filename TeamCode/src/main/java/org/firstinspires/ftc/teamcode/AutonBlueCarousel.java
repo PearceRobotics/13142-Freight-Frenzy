@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AutonBlue", group = "Drive Code")
-public class AutonBlue extends LinearOpMode {
+@Autonomous(name = "AutonBlueCarousel", group = "Drive Code")
+public class AutonBlueCarousel extends LinearOpMode {
 
     private DcMotor leftDrive = null;
     private DcMotor backLeftDrive = null;
@@ -65,17 +65,25 @@ public class AutonBlue extends LinearOpMode {
 
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 1
-        moveForward(14, fast);
-        moveForward(-5, fast);
-        turnClockwise(-30, slow);
-        moveForward(-5, fast);
-        turnClockwise(30, slow);
-        moveForward(50, fast);
-
+        moveForward(6, fast);
+        turnClockwise(-100, fast);
+        moveForward(-14, fast);
+        carouselClockwise(15, fast);
+        turnClockwise(115, fast);
+        moveForward(16, fast);
     }
 
     private void moveForward(double howFar, double speed) {
         // howLong is in seconds
+
+        leftDrive.setTargetPosition(0);
+        rightDrive.setTargetPosition(0);
+        backLeftDrive.setTargetPosition(0);
+        backRightDrive.setTargetPosition(0);
+        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // fetch motor positions
         lFPos = leftDrive.getCurrentPosition();
@@ -90,18 +98,18 @@ public class AutonBlue extends LinearOpMode {
         rBPos += howFar * clicksPerInch;
 
         // move robot to new position
-        leftDrive.setTargetPosition(lFPos);
-        rightDrive.setTargetPosition(rFPos);
-        backLeftDrive.setTargetPosition(lBPos);
-        backRightDrive.setTargetPosition(rBPos);
         leftDrive.setPower(speed);
         rightDrive.setPower(speed);
         backLeftDrive.setPower(speed);
         backRightDrive.setPower(speed);
+        leftDrive.setTargetPosition(lFPos);
+        rightDrive.setTargetPosition(rFPos);
+        backLeftDrive.setTargetPosition(lBPos);
+        backRightDrive.setTargetPosition(rBPos);
 
         // wait for move to complete
-        while (leftDrive.isBusy() && rightDrive.isBusy() &&
-                backLeftDrive.isBusy() && backRightDrive.isBusy()) {
+        while (leftDrive.isBusy() || rightDrive.isBusy() ||
+                backLeftDrive.isBusy() || backRightDrive.isBusy()) {
 
             // Display it for the driver.
             telemetry.addLine("Move Foward");
@@ -146,8 +154,8 @@ public class AutonBlue extends LinearOpMode {
         backRightDrive.setPower(speed);
 
         // wait for move to complete
-        while (leftDrive.isBusy() && rightDrive.isBusy() &&
-                backLeftDrive.isBusy() && backRightDrive.isBusy()) {
+        while (leftDrive.isBusy() || rightDrive.isBusy() ||
+                backLeftDrive.isBusy() || backRightDrive.isBusy()) {
 
             // Display it for the driver.
             telemetry.addLine("Turn Clockwise");
@@ -165,19 +173,22 @@ public class AutonBlue extends LinearOpMode {
         backRightDrive.setPower(0);
     }
 
-    private void CarouselClockWise(double howFar, double speed) {
+    private void carouselClockwise(double howFar, double speed) {
+        carouselDrive.setTargetPosition(0);
+        carouselDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         carPos = carouselDrive.getCurrentPosition();
         carPos += howFar * clicksPerInch;
         carouselDrive.setTargetPosition(carPos);
         carouselDrive.setPower(speed);
-        while (Math.abs(carPos - carouselDrive.getCurrentPosition()) > 0.01) {
 
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        //while (Math.abs(carPos - carouselDrive.getCurrentPosition()) > 0.1) {
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        //}
 
     }
 }

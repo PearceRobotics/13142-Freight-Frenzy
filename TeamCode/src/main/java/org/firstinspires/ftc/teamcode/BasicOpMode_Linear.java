@@ -134,7 +134,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             if (gamepad1.y)
                 armPosition = -25; // lift to safety position
             if (gamepad1.a)
-                armPosition = -320; // score on level 2
+                armPosition = -330; // score on level 2
             if (gamepad1.b)
                 armPosition = -550; //pickup slightly higher
 

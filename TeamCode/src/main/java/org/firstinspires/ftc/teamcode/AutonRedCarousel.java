@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AutonRed", group = "Drive Code")
-public class AutonRed extends LinearOpMode {
+@Autonomous(name = "AutonRedCarousel", group = "Drive Code")
+public class AutonRedCarousel extends LinearOpMode {
 
     private DcMotor leftDrive = null;
     private DcMotor backLeftDrive = null;
