@@ -123,12 +123,22 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
             //arm
             if (gamepad1.left_trigger > 0.25)
-                armPosition = leftArmDrive.getCurrentPosition() - 45;
+                armPosition = leftArmDrive.getCurrentPosition() - 60;
             else if (gamepad1.left_bumper)
-                armPosition = leftArmDrive.getCurrentPosition() + 45;
+                armPosition = leftArmDrive.getCurrentPosition() + 60;
             /*else
                 armPosition = leftArmDrive.getCurrentPosition();*/
 
+            if (gamepad1.dpad_left) {
+                leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                leftArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
+            if (gamepad1.dpad_right) {
+                armPosition =+ 15;
+            }
             if (gamepad1.x)
                 armPosition = -600; // pickup from the ground
             if (gamepad1.y)
@@ -136,7 +146,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             if (gamepad1.a)
                 armPosition = -330; // score on level 2
             if (gamepad1.b)
-                armPosition = -550; //pickup slightly higher
+                armPosition = -475; //pickup slightly higher
 
             /*if (armPosition > 1) {
                 leftArmDrive.setPower(0);

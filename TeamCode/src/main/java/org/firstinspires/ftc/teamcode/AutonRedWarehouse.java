@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AutonBlueWarehouse", group = "Drive Code")
-public class AutonBlueWarehouse extends LinearOpMode {
+@Autonomous(name = "AutonRedWarehouse", group = "Drive Code")
+public class AutonRedWarehouse extends LinearOpMode {
 
     private DcMotor leftDrive = null;
     private DcMotor backLeftDrive = null;
@@ -68,7 +68,7 @@ public class AutonBlueWarehouse extends LinearOpMode {
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 1
         moveForward(12, fast);
-        turnClockwise(-100, fast);
+        turnClockwise(100, fast);
         moveForward(30, fast);
         /*moveArm(-330, fast);
         moveForward(12, slow);
