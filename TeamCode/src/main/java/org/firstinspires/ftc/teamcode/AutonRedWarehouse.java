@@ -68,15 +68,13 @@ public class AutonRedWarehouse extends LinearOpMode {
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 1
         moveForward(12, fast);
-        turnClockwise(100, fast);
+        moveArm(-330, fast);
+        turnClockwise(-40, fast);
+        moveForward(6, slow);
+        intake(5, fast);
+        moveForward(-6, fast);
+        turnClockwise(140, fast);
         moveForward(30, fast);
-        /*moveArm(-330, fast);
-        moveForward(12, slow);
-        intake(10, fast);
-        moveForward(-12, fast);
-        moveArm(-30, fast);
-        turnClockwise(-120, fast);
-        moveForward(20, fast);*/
     }
 
     private void moveForward(double howFar, double speed) {

@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.util.Range;
 public class BasicOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
+    //Create variable for each motor.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor backLeftDrive = null;
@@ -55,9 +56,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
+        /*Assign each motor a name, which matches the name assigned in the
+        configuration of the driver hub. */
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
@@ -69,7 +69,6 @@ public class BasicOpMode_Linear extends LinearOpMode {
         
         leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         int armPosition = 0;
         leftArmDrive.setTargetPosition(0);
         rightArmDrive.setTargetPosition(0);
@@ -111,7 +110,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             BackLeftPower = Range.clip(drive + turn, -1.0,1.0);
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-            BackRightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+            BackRightPower   = Range.clip(drive - turn, -1.0, 1.0);
 
             //two carousels-one forward(left button) and one backward(left trigger)
             if (gamepad1.dpad_up)
@@ -126,8 +125,6 @@ public class BasicOpMode_Linear extends LinearOpMode {
                 armPosition = leftArmDrive.getCurrentPosition() - 60;
             else if (gamepad1.left_bumper)
                 armPosition = leftArmDrive.getCurrentPosition() + 60;
-            /*else
-                armPosition = leftArmDrive.getCurrentPosition();*/
 
             if (gamepad1.dpad_left) {
                 leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -144,9 +141,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
             if (gamepad1.y)
                 armPosition = -25; // lift to safety position
             if (gamepad1.a)
-                armPosition = -330; // score on level 2
+                armPosition = -320; // score on level 2
             if (gamepad1.b)
-                armPosition = -475; //pickup slightly higher
+                armPosition = -475; //score on shared shipping hub
 
             /*if (armPosition > 1) {
                 leftArmDrive.setPower(0);
