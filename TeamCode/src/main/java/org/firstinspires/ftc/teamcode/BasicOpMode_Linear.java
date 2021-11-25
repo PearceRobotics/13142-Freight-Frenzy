@@ -122,9 +122,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
             //arm
             if (gamepad1.left_trigger > 0.25)
-                armPosition = leftArmDrive.getCurrentPosition() - 60;
+                armPosition = leftArmDrive.getCurrentPosition() - 120;
             else if (gamepad1.left_bumper)
-                armPosition = leftArmDrive.getCurrentPosition() + 60;
+                armPosition = leftArmDrive.getCurrentPosition() + 120;
 
             if (gamepad1.dpad_left) {
                 leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -137,13 +137,13 @@ public class BasicOpMode_Linear extends LinearOpMode {
                 armPosition =+ 15;
             }
             if (gamepad1.x)
-                armPosition = -600; // pickup from the ground
+                armPosition = -530; // pickup from the ground
             if (gamepad1.y)
                 armPosition = -25; // lift to safety position
             if (gamepad1.a)
                 armPosition = -320; // score on level 2
             if (gamepad1.b)
-                armPosition = -475; //score on shared shipping hub
+                armPosition = -460; //score on shared shipping hub
 
             /*if (armPosition > 1) {
                 leftArmDrive.setPower(0);
