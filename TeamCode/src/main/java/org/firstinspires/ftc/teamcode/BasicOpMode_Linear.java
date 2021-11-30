@@ -107,6 +107,11 @@ public class BasicOpMode_Linear extends LinearOpMode {
             //Driving and turning(direct drive)
             double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
+            if(turn > 0.1 && turn < -0.1)
+            {
+                drive = 0;
+            }
+
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             BackLeftPower = Range.clip(drive + turn, -1.0,1.0);
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
@@ -131,19 +136,20 @@ public class BasicOpMode_Linear extends LinearOpMode {
                 rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 leftArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 rightArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armPosition = 0;
             }
 
             if (gamepad1.dpad_right) {
-                armPosition =+ 15;
+                armPosition = 0;
             }
             if (gamepad1.x)
-                armPosition = -600; // pickup from the ground
+                armPosition = 55; // pickup from the ground
             if (gamepad1.y)
-                armPosition = -25; // lift to safety position
+                armPosition = 340; // score level 3
             if (gamepad1.a)
-                armPosition = -320; // score on level 2
+                armPosition = 120; // score on shared shipping hub
             if (gamepad1.b)
-                armPosition = -475; //score on shared shipping hub
+                armPosition = 250; //score on level 2
 
             /*if (armPosition > 1) {
                 leftArmDrive.setPower(0);
