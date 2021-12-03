@@ -65,12 +65,13 @@ public class AutonBlueCarousel extends LinearOpMode {
 
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 1
-        moveForward(6, fast);
-        turnClockwise(-100, fast);
-        moveForward(-14, fast);
+        moveForward(12, fast);
+        turnClockwise(75, fast);
+        moveForward(-18.75, slow);
+        turnClockwise(80, fast);
+        moveForward(-10, slow);
         carouselClockwise(15, fast);
-        turnClockwise(115, fast);
-        moveForward(16, fast);
+        moveForward(10, fast);
     }
 
     private void moveForward(double howFar, double speed) {
@@ -184,7 +185,7 @@ public class AutonBlueCarousel extends LinearOpMode {
         //while (Math.abs(carPos - carouselDrive.getCurrentPosition()) > 0.1) {
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

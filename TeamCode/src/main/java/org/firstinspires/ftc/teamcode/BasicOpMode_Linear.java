@@ -126,9 +126,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
                 carouselDrive.setPower(0);
 
             //arm
-            if (gamepad1.left_trigger > 0.25)
+            if (gamepad1.left_trigger > 0.25 || gamepad2.right_trigger > 0.25)
                 armPosition = leftArmDrive.getCurrentPosition() - 60;
-            else if (gamepad1.left_bumper)
+            else if (gamepad1.left_bumper || gamepad2.right_bumper)
                 armPosition = leftArmDrive.getCurrentPosition() + 60;
 
             if (gamepad1.dpad_left) {
@@ -142,14 +142,14 @@ public class BasicOpMode_Linear extends LinearOpMode {
             if (gamepad1.dpad_right) {
                 armPosition = 0;
             }
-            if (gamepad1.x)
-                armPosition = 55; // pickup from the ground
-            if (gamepad1.y)
+            if (gamepad1.x || gamepad2.x)
+                armPosition = 50; // pickup from the ground
+            if (gamepad1.y || gamepad2.y)
                 armPosition = 340; // score level 3
-            if (gamepad1.a)
+            if (gamepad1.a || gamepad2.a)
                 armPosition = 120; // score on shared shipping hub
-            if (gamepad1.b)
-                armPosition = 250; //score on level 2
+            if (gamepad1.b || gamepad2.b)
+                armPosition = 255; //score on level 2
 
             /*if (armPosition > 1) {
                 leftArmDrive.setPower(0);
