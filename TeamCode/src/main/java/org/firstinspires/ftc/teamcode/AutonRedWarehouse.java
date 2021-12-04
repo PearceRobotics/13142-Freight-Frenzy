@@ -178,26 +178,28 @@ public class AutonRedWarehouse extends LinearOpMode {
     }
 
     private void moveArm(int position, double speed) {
-        leftArmDrive.setTargetPosition(0);
-        rightArmDrive.setTargetPosition(0);
+        //leftArmDrive.setTargetPosition(0);
+        //rightArmDrive.setTargetPosition(0);
+        leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armPos = leftArmDrive.getCurrentPosition();
-        armPos = position;
-        leftArmDrive.setTargetPosition(armPos);
-        rightArmDrive.setTargetPosition(armPos);
+        //armPos = leftArmDrive.getCurrentPosition();
+        //armPos = position;
+        leftArmDrive.setTargetPosition(position);
+        rightArmDrive.setTargetPosition(position);
         leftArmDrive.setPower(speed);
         rightArmDrive.setPower(speed);
 
         while (leftArmDrive.isBusy() || rightArmDrive.isBusy()) {
             telemetry.addLine("Move Arm");
-            telemetry.addData("arm position", armPos);
+            telemetry.addData("arm position", leftArmDrive.getCurrentPosition());
             telemetry.update();
-
+        }
         leftArmDrive.setPower(0);
         rightArmDrive.setPower(0);
-        }
     }
+
 
     private void intake(double howFar, double speed) {
         intakeDrive.setTargetPosition(0);

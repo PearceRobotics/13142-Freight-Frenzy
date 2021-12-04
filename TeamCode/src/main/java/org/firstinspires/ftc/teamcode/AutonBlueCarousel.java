@@ -65,13 +65,14 @@ public class AutonBlueCarousel extends LinearOpMode {
 
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 1
-        moveForward(12, fast);
-        turnClockwise(75, fast);
-        moveForward(-18.75, slow);
+        moveForward(14, fast);
+        turnClockwise(-80, fast);
+        moveForward(-12, slow);
+        moveForward(1, fast);
         turnClockwise(80, fast);
-        moveForward(-10, slow);
+        moveForward(-8.75, slow);
         carouselClockwise(15, fast);
-        moveForward(10, fast);
+        moveForward(11, fast);
     }
 
     private void moveForward(double howFar, double speed) {

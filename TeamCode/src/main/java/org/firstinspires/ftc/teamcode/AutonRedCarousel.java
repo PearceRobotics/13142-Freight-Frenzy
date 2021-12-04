@@ -68,10 +68,11 @@ public class AutonRedCarousel extends LinearOpMode {
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg
         moveForward(12, fast);
-        turnClockwise(75, fast);
-        moveForward(-17.5, slow);
-        turnClockwise(-80, fast);
-        moveForward(-11.5, slow);
+        turnClockwise(68, slow);
+        moveForward(-12, slow);
+        moveForward(1, fast);
+        turnClockwise(-65, slow);
+        moveForward(-10, slow);
         carouselClockWise(-15, fast);
         moveForward(10, fast);
 

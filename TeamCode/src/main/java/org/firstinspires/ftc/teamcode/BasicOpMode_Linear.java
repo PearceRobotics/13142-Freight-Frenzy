@@ -145,9 +145,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
             if (gamepad1.x || gamepad2.x)
                 armPosition = 50; // pickup from the ground
             if (gamepad1.y || gamepad2.y)
-                armPosition = 340; // score level 3
+                armPosition = 365; // score level 3
             if (gamepad1.a || gamepad2.a)
-                armPosition = 120; // score on shared shipping hub
+                armPosition = 150; // score on shared shipping hub
             if (gamepad1.b || gamepad2.b)
                 armPosition = 255; //score on level 2
 
