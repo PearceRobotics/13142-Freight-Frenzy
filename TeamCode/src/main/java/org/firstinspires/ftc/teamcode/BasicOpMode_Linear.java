@@ -33,6 +33,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.configuration.annotations.DigitalIoDeviceType;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -50,6 +52,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
     private DcMotor leftArmDrive = null;
     private DcMotor rightArmDrive = null;
     private DcMotor intakeDrive = null;
+    private TouchSensor magnet = null;
 
     @Override
     public void runOpMode() {
@@ -66,6 +69,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
         leftArmDrive = hardwareMap.get(DcMotor.class, "left_arm_drive");
         rightArmDrive = hardwareMap.get(DcMotor.class, "right_arm_drive");
         intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
+        magnet = hardwareMap.get(TouchSensor.class, "Magnet");
         
         leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -95,6 +99,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        int offset = 0; //zero position offset to account for difference between start position and zero position
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
@@ -106,7 +112,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
             //Driving and turning(direct drive)
             double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
+            double turn  =  (gamepad1.right_stick_x * 1.25);
             if(turn > 0.1 && turn < -0.1)
             {
                 drive = 0;
@@ -140,16 +146,37 @@ public class BasicOpMode_Linear extends LinearOpMode {
             }
 
             if (gamepad1.dpad_right) {
+                while(!magnet.isPressed()&&!gamepad1.dpad_left) {
+                        //leftArmDrive.setTargetPosition(armPosition);
+                        //rightArmDrive.setTargetPosition(armPosition);
+                    leftArmDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    rightArmDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    leftArmDrive.setPower(-0.05);
+                    rightArmDrive.setPower(-0.05);
+                }
+                leftArmDrive.setPower(0);
+                rightArmDrive.setPower(0);
                 armPosition = 0;
+                leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                leftArmDrive.setTargetPosition(0);
+                rightArmDrive.setTargetPosition(0);
+                leftArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftArmDrive.setPower(1);
+                rightArmDrive.setPower(1);
+                offset = 5;
             }
             if (gamepad1.x || gamepad2.x)
-                armPosition = 50; // pickup from the ground
+                armPosition = 25-offset; // pickup from the ground
             if (gamepad1.y || gamepad2.y)
-                armPosition = 365; // score level 3
+                armPosition = 255-offset; // score level 3
             if (gamepad1.a || gamepad2.a)
-                armPosition = 150; // score on shared shipping hub
+                armPosition = 100-offset; // score on shared shipping hub
             if (gamepad1.b || gamepad2.b)
-                armPosition = 255; //score on level 2
+                armPosition = 155-offset; // score on level 2
 
             /*if (armPosition > 1) {
                 leftArmDrive.setPower(0);
