@@ -45,6 +45,7 @@ public class AutonBlueWarehouse extends LinearOpMode {
         rightArmDrive = hardwareMap.get(DcMotor.class, "right_arm_drive");
         intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
 
+        waitForStart();
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -63,12 +64,12 @@ public class AutonBlueWarehouse extends LinearOpMode {
         leftArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        waitForStart();
+
 
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 1
         moveForward(12, fast);
-        moveArm(-330, fast);
+        //moveArm(-330, fast);
         turnClockwise(40, fast);
         moveForward(6, slow);
         intake(5, fast);

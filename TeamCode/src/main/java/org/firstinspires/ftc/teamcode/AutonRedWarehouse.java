@@ -45,6 +45,8 @@ public class AutonRedWarehouse extends LinearOpMode {
         rightArmDrive = hardwareMap.get(DcMotor.class, "right_arm_drive");
         intakeDrive = hardwareMap.get(DcMotor.class, "intake_drive");
 
+        waitForStart();
+
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -53,17 +55,6 @@ public class AutonRedWarehouse extends LinearOpMode {
         leftArmDrive.setDirection(DcMotor.Direction.REVERSE);
         rightArmDrive.setDirection(DcMotor.Direction.FORWARD);
         intakeDrive.setDirection(DcMotor.Direction.FORWARD);
-
-        leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftArmDrive.setTargetPosition(0);
-        rightArmDrive.setTargetPosition(0);
-        leftArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        waitForStart();
 
         // *****************Dead reckoning list*************
         // Distances in inches, angles in deg, speed 0.0 to 1
@@ -79,11 +70,16 @@ public class AutonRedWarehouse extends LinearOpMode {
 
     private void moveForward(double howFar, double speed) {
         // howLong is in seconds
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         leftDrive.setTargetPosition(0);
         rightDrive.setTargetPosition(0);
         backLeftDrive.setTargetPosition(0);
         backRightDrive.setTargetPosition(0);
+
         leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -178,12 +174,14 @@ public class AutonRedWarehouse extends LinearOpMode {
     }
 
     private void moveArm(int position, double speed) {
-        //leftArmDrive.setTargetPosition(0);
-        //rightArmDrive.setTargetPosition(0);
+        leftArmDrive.setTargetPosition(0);
+        rightArmDrive.setTargetPosition(0);
         leftArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightArmDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightArmDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightArmDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //armPos = leftArmDrive.getCurrentPosition();
         //armPos = position;
         leftArmDrive.setTargetPosition(position);
@@ -201,11 +199,11 @@ public class AutonRedWarehouse extends LinearOpMode {
     }
 
 
-    private void intake(double howFar, double speed) {
+    private void intake(int howFar, double speed) {
         intakeDrive.setTargetPosition(0);
         intakeDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakePos = intakeDrive.getCurrentPosition();
-        intakePos += howFar * clicksPerInch;
+        //intakePos = intakeDrive.getCurrentPosition();
+        intakePos += (howFar * clicksPerInch);
         intakeDrive.setTargetPosition(intakePos);
         intakeDrive.setPower(speed);
 
@@ -213,9 +211,9 @@ public class AutonRedWarehouse extends LinearOpMode {
             telemetry.addLine("intake");
             telemetry.addData("intake position", intakePos);
             telemetry.update();
-
-        intakeDrive.setPower(0);
         }
+        intakeDrive.setPower(0);
+
 
 
     }
