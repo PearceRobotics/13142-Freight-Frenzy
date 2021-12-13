@@ -70,12 +70,12 @@ public class AutonBlueWarehouse extends LinearOpMode {
         // Distances in inches, angles in deg, speed 0.0 to 1
         moveForward(12, fast);
         //moveArm(-330, fast);
-        turnClockwise(40, fast);
-        moveForward(6, slow);
-        intake(5, fast);
+        turnClockwise(90, fast);
+        moveForward(-25, slow);
+        /*intake(5, fast);
         moveForward(-6, fast);
         turnClockwise(-140, fast);
-        moveForward(30, fast);
+        moveForward(30, fast);*/
     }
 
     private void moveForward(double howFar, double speed) {
